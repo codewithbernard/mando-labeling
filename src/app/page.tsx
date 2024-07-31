@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
 import { useQuestions } from "~/lib/hooks/use-questions";
 
 export default function Home() {
@@ -16,11 +16,17 @@ export default function Home() {
     }
   };
 
+  // Filter questions
+  // Don't show assigned questions
+  const displayedQuestions = useMemo(() => {
+    return questions?.filter((q) => !q.assigned);
+  }, [questions]);
+
   return (
     <>
       <main>
         <ul>
-          {questions?.map((item, index) => (
+          {displayedQuestions?.map((item, index) => (
             <li
               key={`${item.question}-${index}`}
               className="flex items-center justify-between"
